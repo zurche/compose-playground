@@ -1,4 +1,4 @@
-package com.az.composeplayground.ui
+package com.az.composeplayground.ui.composables
 
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.Spring
