@@ -1,7 +1,9 @@
 package com.az.composeplayground.ui
 
 import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -36,7 +38,14 @@ fun TransitionDemo() {
         }
     }
 
-    val size by transition.animateDp(label = "") { state ->
+    val size by transition.animateDp(label = "",
+        transitionSpec = {
+            if (targetState == BoxState.Expanded) {
+                spring(Spring.DampingRatioHighBouncy, Spring.StiffnessMedium)
+            } else {
+                spring(Spring.DampingRatioNoBouncy, Spring.StiffnessVeryLow)
+            }
+        }) { state ->
         when (state) {
             BoxState.Small -> 100.dp
             BoxState.Expanded -> 300.dp
