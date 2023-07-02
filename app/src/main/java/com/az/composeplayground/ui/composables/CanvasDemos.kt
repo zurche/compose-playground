@@ -144,7 +144,7 @@ fun DrawPathTest() {
 }
 
 @Composable
-@Preview(backgroundColor = 0xFFFFFFFF, showBackground = true)
+//@Preview(backgroundColor = 0xFFFFFFFF, showBackground = true)
 fun CardCutOutTest() {
     val cardSize = 300
     Card(
@@ -179,7 +179,10 @@ fun CardCutOutTest() {
 
                         drawRect(
                             color = Color.White,
-                            topLeft = Offset(x = size.width - (cardSize / 2f), y = (cardSize / 2.08f)),
+                            topLeft = Offset(
+                                x = size.width - (cardSize / 2f),
+                                y = (cardSize / 2.08f)
+                            ),
                             size = size / 5f
                         )
 
@@ -201,12 +204,18 @@ fun CardCutOutTest() {
                             sweepAngle = 90f,
                             useCenter = true,
                             topLeft = Offset(x = size.width - (cardSize * 2.065f), y = 0f),
-                            size = Size(width = cardSize.toFloat() + 20f, height = cardSize.toFloat() + 20f)
+                            size = Size(
+                                width = cardSize.toFloat() + 20f,
+                                height = cardSize.toFloat() + 20f
+                            )
                         )
 
                         drawRect(
                             color = Color.White,
-                            topLeft = Offset(x = size.width - (cardSize / 2f), y = cardSize.toFloat()),
+                            topLeft = Offset(
+                                x = size.width - (cardSize / 2f),
+                                y = cardSize.toFloat()
+                            ),
                             size = size / 5f
                         )
 
@@ -215,8 +224,14 @@ fun CardCutOutTest() {
                             startAngle = 270f,
                             sweepAngle = 90f,
                             useCenter = true,
-                            topLeft = Offset(x = size.width - (cardSize * 1.066f), y = cardSize.toFloat()),
-                            size = Size(width = cardSize.toFloat() + 20f, height = cardSize.toFloat() + 20f)
+                            topLeft = Offset(
+                                x = size.width - (cardSize * 1.066f),
+                                y = cardSize.toFloat()
+                            ),
+                            size = Size(
+                                width = cardSize.toFloat() + 20f,
+                                height = cardSize.toFloat() + 20f
+                            )
                         )
 
                     }
@@ -224,4 +239,17 @@ fun CardCutOutTest() {
                 .fillMaxSize()
         )
     }
+}
+
+@Composable
+@Preview(backgroundColor = 0xFFFFFFFF, showBackground = true)
+fun PerformanceChart(list: List<Int> = listOf(1,3,0,5,3)) {
+
+    val maxY = list.max()
+    val minY = list.min()
+
+
+    Canvas(modifier = Modifier.size(100.dp), onDraw = {
+        drawLine(Color.Red, Offset(0f, size.height), Offset(100f, 100f), strokeWidth = 3f)
+    })
 }
