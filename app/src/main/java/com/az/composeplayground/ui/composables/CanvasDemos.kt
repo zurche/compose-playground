@@ -1,31 +1,33 @@
 package com.az.composeplayground.ui.composables
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
-import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.inset
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.drawscope.withTransform
-import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -245,11 +247,30 @@ fun CardCutOutTest() {
 @Preview(backgroundColor = 0xFFFFFFFF, showBackground = true)
 fun PerformanceChart(list: List<Int> = listOf(1,3,0,5,3)) {
 
-    val maxY = list.max()
-    val minY = list.min()
+    val zippedList = list.zipWithNext()
 
+    Row(modifier = Modifier.fillMaxHeight()) {
+        zippedList.forEach {
+            Dot(it, Color.Red, 500.dp)
+        }
+    }
 
-    Canvas(modifier = Modifier.size(100.dp), onDraw = {
-        drawLine(Color.Red, Offset(0f, size.height), Offset(100f, 100f), strokeWidth = 3f)
+}
+
+@Composable
+fun RowScope.Dot(value: Pair<Int, Int>, color: Color, maxHeight: Dp) {
+    val firstItemHeight = remember(value.first) { value.first * maxHeight.value / 3.5f }
+    val secondItemHeight = remember(value.second) { value.second * maxHeight.value / 3.5f }
+
+    Canvas(modifier = Modifier.weight(1f), onDraw = {
+        val firstValueOffset = Offset(x = 0f, y = firstItemHeight.dp.toPx())
+        val secondValueOffset = Offset(x = size.width, y = secondItemHeight.dp.toPx())
+
+        drawLine(
+            color = color,
+            start = firstValueOffset,
+            end = secondValueOffset,
+            strokeWidth = 1.dp.toPx(),
+            cap = StrokeCap.Round)
     })
 }
