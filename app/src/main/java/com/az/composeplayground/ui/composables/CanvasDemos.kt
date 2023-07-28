@@ -245,22 +245,6 @@ fun CardCutOutTest() {
 }
 
 @Composable
-//@Preview(backgroundColor = 0xFFFFFFFF, showBackground = true)
-fun PerformanceChart(list: List<Float> = listOf(102f, 322f, 0f, 150f, 130f)) {
-
-    val augmenterModifierForList = getAugmenterModifierForValue(list.max())
-
-    val zippedList = list.zipWithNext()
-
-    Row(modifier = Modifier.fillMaxHeight()) {
-        zippedList.forEach {
-            Dot(it, Color.Red, 700.dp, augmenterModifierForList)
-        }
-    }
-
-}
-
-@Composable
 @Preview(heightDp = 300, widthDp = 300, backgroundColor = 0xFFFFFFFF, showBackground = true)
 fun PerformanceChartV2(
     list: List<Float> = listOf(
@@ -290,49 +274,10 @@ fun PerformanceChartV2(
             Canvas(modifier = Modifier
                 .fillMaxHeight()
                 .weight(1f), onDraw = {
-                if (lastY == 0f) {
-                    lastY = size.height
-                }
                 val currentPoint = Offset(x = size.width, y = size.height.times(1 - yPercentage))
                 drawLine(color = Color.Red, start = Offset(x = 0f, y = lastY), end = currentPoint)
                 lastY = currentPoint.y
             })
         }
     }
-}
-
-private fun getAugmenterModifierForValue(value: Float): Int =
-    when (value) {
-        in 0f..9f -> 9
-        in 9f..99f -> 9_0
-        in 99f..999f -> 9_00
-        in 999f..9_999f -> 9_000
-        in 9_999f..99_999f -> 90_000
-        else -> 900_000
-    }
-
-@Composable
-fun RowScope.Dot(
-    value: Pair<Float, Float> = Pair(10f, 30f),
-    color: Color = Color.Red,
-    maxHeight: Dp = 500.dp,
-    graphAugmenterValue: Int = 90
-) {
-    val firstItemHeight =
-        remember(value.first) { value.first * maxHeight.value / graphAugmenterValue }
-    val secondItemHeight =
-        remember(value.second) { value.second * maxHeight.value / graphAugmenterValue }
-
-    Canvas(modifier = Modifier.weight(1f), onDraw = {
-        val firstValueOffset = Offset(x = 0f, y = maxHeight.value - firstItemHeight)
-        val secondValueOffset = Offset(x = size.width, y = maxHeight.value - secondItemHeight)
-
-        drawLine(
-            color = color,
-            start = firstValueOffset,
-            end = secondValueOffset,
-            strokeWidth = 1.dp.toPx(),
-            cap = StrokeCap.Round
-        )
-    })
 }
