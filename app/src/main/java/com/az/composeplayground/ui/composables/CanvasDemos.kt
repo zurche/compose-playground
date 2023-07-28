@@ -262,15 +262,37 @@ fun PerformanceChart(list: List<Float> = listOf(102f, 322f, 0f, 150f, 130f)) {
 
 @Composable
 @Preview(heightDp = 300, widthDp = 300, backgroundColor = 0xFFFFFFFF, showBackground = true)
-fun PerformanceChartV2(list: List<Float> = listOf(153.7f, 154.1f, 153.2f, 155.7f, 156f)) {
+fun PerformanceChartV2(
+    list: List<Float> = listOf(
+        113.518f,
+        113.799f,
+        113.333f,
+        113.235f,
+        114.099f,
+        113.506f,
+        113.985f,
+        114.212f,
+        114.125f,
+        113.531f,
+        114.228f,
+        113.284f,
+        114.031f,
+        113.493f,
+        113.112f
+    )
+) {
     Row(modifier = Modifier.fillMaxWidth()) {
         var lastY = 0f
         val max = list.max()
         val min = list.min()
         for (value in list) {
             val yPercentage = (value - min) / (max - min)
-            Canvas(modifier = Modifier.fillMaxHeight().weight(1f), onDraw = {
-                if (lastY == 0f) { lastY = size.height }
+            Canvas(modifier = Modifier
+                .fillMaxHeight()
+                .weight(1f), onDraw = {
+                if (lastY == 0f) {
+                    lastY = size.height
+                }
                 val currentPoint = Offset(x = size.width, y = size.height.times(1 - yPercentage))
                 drawLine(color = Color.Red, start = Offset(x = 0f, y = lastY), end = currentPoint)
                 lastY = currentPoint.y
