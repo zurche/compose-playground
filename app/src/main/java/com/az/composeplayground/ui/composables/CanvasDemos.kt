@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -244,7 +245,7 @@ fun CardCutOutTest() {
 }
 
 @Composable
-@Preview(backgroundColor = 0xFFFFFFFF, showBackground = true)
+//@Preview(backgroundColor = 0xFFFFFFFF, showBackground = true)
 fun PerformanceChart(list: List<Float> = listOf(102f, 322f, 0f, 150f, 130f)) {
 
     val augmenterModifierForList = getAugmenterModifierForValue(list.max())
@@ -257,6 +258,25 @@ fun PerformanceChart(list: List<Float> = listOf(102f, 322f, 0f, 150f, 130f)) {
         }
     }
 
+}
+
+@Composable
+@Preview(heightDp = 300, widthDp = 300, backgroundColor = 0xFFFFFFFF, showBackground = true)
+fun PerformanceChartV2(list: List<Float> = listOf(153.7f, 154.1f, 153.2f, 155.7f, 156f)) {
+    Row(modifier = Modifier.fillMaxWidth()) {
+        var lastY = 0f
+        val max = list.max()
+        val min = list.min()
+        for (value in list) {
+            val yPercentage = (value - min) / (max - min)
+            Canvas(modifier = Modifier.fillMaxHeight().weight(1f), onDraw = {
+                if (lastY == 0f) { lastY = size.height }
+                val currentPoint = Offset(x = size.width, y = size.height.times(1 - yPercentage))
+                drawLine(color = Color.Red, start = Offset(x = 0f, y = lastY), end = currentPoint)
+                lastY = currentPoint.y
+            })
+        }
+    }
 }
 
 private fun getAugmenterModifierForValue(value: Float): Int =
